@@ -1,0 +1,101 @@
+<div>
+    <table style="border:1px; ">
+        <tr>
+            <th>Environment</th>
+            <th>Devices with multiple dps</th>
+            <th>Vehicles with multiple devices</th>
+            <th>Vehicles with no dataSource</th>
+            <th>Vehicles with no or invalid vin</th>
+            <th>Vehicles with no default device version</th>
+            <th>Vehicles with default version > dps.maxFeedVersion</th>
+        </tr>
+        {{#each this}}
+        <tr>
+            <td>{{this.environmentName}}</td>
+            {{#if this.monitoringFailed}}
+            <td colspan="6">{{ this.error.message  }}</td>
+            {{/if}}
+            {{#unless this.monitoringFailed}}
+            <td>
+                {{#if this.multipleDps.length}}
+                <ul>
+                    {{#each this.multipleDps}}
+                    <li>{{this}}</li>
+                    {{/each}}
+
+                </ul>
+                {{/if}}
+                {{#unless  this.multipleDps.length}}
+                All good.
+                {{/unless}}
+            </td>
+            <td>
+                {{#if this.vehiclesWithMultipleDevices.length}}
+                <ul>
+                    {{#each this.vehiclesWithMultipleDevices}}
+                    <li>{{this.id}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+                {{#unless  this.vehiclesWithMultipleDevices.length}}
+                All good.
+                {{/unless}}
+            </td>
+            <td>
+                {{#if this.vehiclesWithNoDataSource.length}}
+                <ul>
+                    {{#each this.vehiclesWithNoDataSource}}
+                    <li> {{this.id}}</li>
+                    {{/each}}
+
+                </ul>
+                {{/if}}
+                {{#unless  this.vehiclesWithNoDataSource.length}}
+                All good.
+                {{/unless}}
+            </td>
+            <td>
+                {{#if this.vehiclesWithNoOrInvalidVin.length}}
+                <ul>
+                    {{#each this.vehiclesWithNoOrInvalidVin}}
+                    <li>{{this.id}}</li>
+                    {{/each}}
+
+                </ul>
+                {{/if}}
+                {{#unless  this.vehiclesWithNoOrInvalidVin.length}}
+                All good.
+                {{/unless}}
+            </td>
+            <td>
+                {{#if this.vehiclesWithNoDefaultDeviceVersion.length}}
+                <ul>
+                    {{#each this.vehiclesWithNoDefaultDeviceVersion}}
+                    <li>{{this.id}}</li>
+                    {{/each}}
+
+                </ul>
+                {{/if}}
+
+                {{#unless  this.vehiclesWithNoDefaultDeviceVersion.length}}
+                All good.
+                {{/unless}}
+            </td>
+            <td>
+                {{#if this.vehiclesWithDefaultVersionGreaterThanDpsMax.length}}
+                <ul>
+                    {{#each this.vehiclesWithDefaultVersionGreaterThanDpsMax}}
+                    <li>{{this.id}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+
+                {{#unless  this.vehiclesWithDefaultVersionGreaterThanDpsMax.length}}
+                All good.
+                {{/unless}}
+            </td>
+            {{/unless}}
+        </tr>
+        {{/each}}
+    </table>
+</div>

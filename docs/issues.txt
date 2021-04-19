@@ -1,0 +1,4 @@
+ford-poller and ford-unbuffered-poller heartbeat is having the same message. Need to embed instance name. Also, heartbeat is repeated twice.
+toyota-consent-processor doesn't have any heartbeat
+core-cron-jobs doesn't have any heartbeat
+enrollment-history-sync doesn't have any heartbeat

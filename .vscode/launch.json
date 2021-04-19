@@ -1,0 +1,21 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+	
+		{
+			"name": "portal-api",
+			"program": "${workspaceFolder}/portal-api/api.js",
+			"request": "launch",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"type": "pwa-node"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "js-current",
+			"program": "${file}"
+		}
+	]
+}

@@ -1,0 +1,13 @@
+require("dotenv").config();
+let config = {};
+config.mailerUrl = process.env.MAILER_URL;
+config.mailFrom = "automatedtest@Motorq.co";
+config.mailTo = "servicealerts@motorq.co";
+config.mailSubject = "Webjob HeartBeat Alert";
+config.mailText = "Heartbeat alert for production";
+config.heartBeatTableStorageConnectionString = process.env.HB_TABLESTORE_CONNECTION_STRING;
+config.appInsightsRetryLimit = process.env.AI_QUERY_RETRY_LIMIT || 5;
+config.tableStoreRetryLimit = process.env.TABLE_STORE_RETRY_LIMIT || 5;
+config.heartBeatTable = process.env.HEARTBEAT_TABLE || 'heartbeats';
+config.context = null;
+module.exports = config;

@@ -1,0 +1,13 @@
+require('dotenv').config();
+let config = {};
+config.pgUser = process.env.PGUSER;
+config.pgHost = process.env.PGHOST;
+config.pgDatabase = process.env.PGDATABASE;
+config.pgPassword = process.env.PGPASSWORD;
+config.pgPort = process.env.PGPORT;
+config.account = process.env.SNOWFLAKE_ACCOUNT;
+config.username = process.env.SNOWFLAKE_USERNAME;
+config.password = process.env.SNOWFLAKE_PASSWORD;
+config.volumeCheckMaxDiffThreshold = process.env.SNOWFLAKE_VOLUME_CHECK_MAX_DIFF_THRESHOLD || 25;
+config.SyncThresholdInSeconds = process.env.SNOWFLAKE_SYNC_CHECK_THRESHOLD_IN_SECS || 7200;
+module.exports = config;
