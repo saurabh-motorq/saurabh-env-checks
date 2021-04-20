@@ -2,7 +2,7 @@ require('dotenv').config();
 const { components: componentsMasterList } = require('../components');
 const _ = require('lodash');
 const fs = require('fs');
-const devLocal = require('./dev-local');
+const devLocal = require('./saurabh-env');
 
 const environments = [];
 

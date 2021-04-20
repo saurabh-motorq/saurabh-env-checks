@@ -1,4 +1,4 @@
-const enviroment = {
+const environment = {
 	"name": "SAURABH_TEST",
 	"apiVersion": "v3",
 	// "feedApiUrl": process.env.CUSTOMER_DEMO_FEED_API_URL,
@@ -154,4 +154,4 @@ const enviroment = {
 		"lat/lon sync heartbeat"
 	]
 }
-module.exports = enviroment
+module.exports = environment
