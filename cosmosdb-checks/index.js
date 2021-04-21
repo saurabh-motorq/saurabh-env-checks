@@ -1,7 +1,8 @@
 require('dotenv').config();
 const CosmosClient = require("@azure/cosmos").CosmosClient;
 const config = require("./config");
-const cosmosCheckDuplicateDps = require('./helpers')
+const checkDuplicateDpsRepo = require('./check-duplicate-dps-repo');
+const enrolledVehiclesDevicesCountCheckRepo = require('./enrolled-vehicles-devices-count-check-repo');
 
 let client= null;
 let database =null;
@@ -20,7 +21,8 @@ module.exports = async function (context, myTimer) {
     var timeStamp = new Date().toISOString();
     context=console;
     await setupCosmosdbClient(context);
-    await cosmosCheckDuplicateDps(client, database, context);
+    await checkDuplicateDpsRepo.performDuplicateDpsCheck(database, context);
+    await enrolledVehiclesDevicesCountCheckRepo.performEnrolledVehiclesDevicesCountCheck(database, context);
     // if (myTimer.isPastDue)
     // {
     //     context.log('JavaScript is running late!');

@@ -2,7 +2,7 @@ const { insertAlertIntoPg } = require("./pg-repo");
 var config = require("./config");
 const moment = require('moment');
 const { environments } = require('../common/environments/index');
-async function cosmosCheckDuplicateDps(client, database, context)
+async function performDuplicateDpsCheck(database, context)
 {
     for(const env of environments) {
         var querySpec = {
@@ -29,4 +29,4 @@ async function cosmosCheckDuplicateDps(client, database, context)
     }
 }
 
-module.exports = cosmosCheckDuplicateDps;
+module.exports = { performDuplicateDpsCheck };
