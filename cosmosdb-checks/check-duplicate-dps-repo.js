@@ -24,7 +24,7 @@ async function performDuplicateDpsCheck(database, context)
         }
         catch(err){
             context.log(err);
-            await insertAlertIntoPg(env,'duplicate dps found', moment().toISOString, 'Duplicate Dps Check Failed');
+            await insertAlertIntoPg(env.name,'duplicate dps found', 'Duplicate Dps Check Failed');
         }
     }
 }
