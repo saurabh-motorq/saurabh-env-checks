@@ -1,10 +1,12 @@
 require('dotenv').config();
 const CosmosClient = require("@azure/cosmos").CosmosClient;
 const config = require("./config");
-const checkDuplicateDpsRepo = require('./check-duplicate-dps-repo');
+const checkDuplicateDpsRepo = require('./duplicate-dps-check-repo');
 const enrolledVehiclesDevicesCountCheckRepo = require('./enrolled-vehicles-devices-count-check-repo');
 const vehiclesWithMultipleDevicesCountCeckRepo = require('./vehicles-with-multiple-devices-count-check-repo');
-const vehiclesWithNullVinCheckRepo = require('./check-null-vin-repo');
+const vehiclesWithNullVinCheckRepo = require('./vehicle-null-vin-check-repo');
+const latestTripDataCheckRepo = require('./latest-trip-data-check-repo');
+
 let client= null;
 let database =null;
 async function setupCosmosdbClient(context)
@@ -22,10 +24,11 @@ module.exports = async function (context, myTimer) {
     var timeStamp = new Date().toISOString();
     context=console;
     await setupCosmosdbClient(context);
-    await checkDuplicateDpsRepo.performDuplicateDpsCheck(database, context);
-    await enrolledVehiclesDevicesCountCheckRepo.performEnrolledVehiclesDevicesCountCheck(database, context);
-    await vehiclesWithMultipleDevicesCountCeckRepo.performVehiclesWithMultipleDevicesCountCheck(database,context);
-    await vehiclesWithNullVinCheckRepo.performNullVinCheck(database,context);
+    // await checkDuplicateDpsRepo.performDuplicateDpsCheck(database, context);
+    // await enrolledVehiclesDevicesCountCheckRepo.performEnrolledVehiclesDevicesCountCheck(database, context);
+    // await vehiclesWithMultipleDevicesCountCeckRepo.performVehiclesWithMultipleDevicesCountCheck(database,context);
+    // await vehiclesWithNullVinCheckRepo.performNullVinCheck(database,context);
+    await latestTripDataCheckRepo.performLatestTripDataCheck(database,context);
     // if (myTimer.isPastDue)
     // {
     //     context.log('JavaScript is running late!');
