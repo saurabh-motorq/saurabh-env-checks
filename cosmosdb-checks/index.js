@@ -6,7 +6,8 @@ const enrolledVehiclesDevicesCountCheckRepo = require('./enrolled-vehicles-devic
 const vehiclesWithMultipleDevicesCountCeckRepo = require('./vehicles-with-multiple-devices-count-check-repo');
 const vehiclesWithNullVinCheckRepo = require('./vehicle-null-vin-check-repo');
 const latestTripDataCheckRepo = require('./latest-trip-data-check-repo');
-const ttltelematicsfunctioningcheckrepo = require('./ttl-telematics-funtioning-check-repo');
+const TTLTelematicsCheckRepo = require('./ttl-telematics-check-repo');
+const TTLReferenceDataCheckRepo = require('./ttl-reference-data-check-repo');
 
 let client= null;
 let database =null;
@@ -30,7 +31,8 @@ module.exports = async function (context, myTimer) {
     await vehiclesWithMultipleDevicesCountCeckRepo.performVehiclesWithMultipleDevicesCountCheck(database,context);
     await vehiclesWithNullVinCheckRepo.performNullVinCheck(database,context);
     await latestTripDataCheckRepo.performLatestTripDataCheck(database,context);
-    await ttltelematicsfunctioningcheckrepo.performTTLTelematicsFunctioningCheck(database,context);
+    await TTLTelematicsCheckRepo.performTTLTelematicsCheck(database,context);
+    await TTLReferenceDataCheckRepo.performTTLReferenceDataCheck(database,context);
     // if (myTimer.isPastDue)
     // {
     //     context.log('JavaScript is running late!');

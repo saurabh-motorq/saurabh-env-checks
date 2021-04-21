@@ -8,7 +8,8 @@ config.database = {
 };
 config.collection = {
 	'entitiesId': process.env.DOCDB_ENTITIES_COLLECTION || 'entities',
-	'telematicsId': process.env.DOCDB_TELEMATICS_COLLECTION || 'telematics'
+	'telematicsId': process.env.DOCDB_TELEMATICS_COLLECTION || 'telematics',
+	'referenceDataId': process.env.DOCDB_REFERENCE_DATA_COLLECTION || 'reference-data'
 };
 
 config.pgUser = process.env.PG_SAURABH_TEST_USER;

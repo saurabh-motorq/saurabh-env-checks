@@ -1,7 +1,7 @@
 const { insertAlertIntoPg } = require("./pg-repo");
 var config = require("./config");
 const { environments } = require('../common/environments/index');
-async function performTTLTelematicsFunctioningCheck(database, context)
+async function performTTLReferenceDataCheck(database, context)
 {
     for(const env of environments) {
         var querySpec = {
@@ -9,21 +9,21 @@ async function performTTLTelematicsFunctioningCheck(database, context)
         };
 
         try{
-            const container = database.container(config.collection.telematicsId);
+            const container = database.container(config.collection.referenceDataId);
             const { resources: expiredReportCount} = await container.items.query(querySpec).fetchAll();
             // context.log(vehicleCount[0].count);
             if (expiredReportCount[0].count === 0) {
-                    context.log('No expired reports present');
+                    context.log('No expired reports present in reference-data collection');
             } else {
                 context.log('Expired Reports Found');
-                await insertAlertIntoPg(env.name,'TTL_TELEMATICS_FUNCTIONING','Number of expired reports found in telematics with _ts before seven days ' + expiredReportCount[0].count);
+                await insertAlertIntoPg(env.name,'TTL_REFERENCE_DATA_CHECK','Number of expired reports found in reference_data with timestamp before last seven days ' + expiredReportCount[0].count);
             }
         }
         catch(err){
             context.log(err);
-            await insertAlertIntoPg(env.name,'TTL_TELEMATICS_FUNCTIONING', 'Ttl telematics functioning check for report having timestamp before last seven days failed');
+            await insertAlertIntoPg(env.name,'TTL_REFERENCE_DATA_CHECK', 'Ttl reference_data functioning check for reports having timestamp before last seven days failed');
         }
     }
 }
 
-module.exports = { performTTLTelematicsFunctioningCheck };
+module.exports = { performTTLReferenceDataCheck };
