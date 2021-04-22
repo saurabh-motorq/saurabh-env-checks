@@ -21,7 +21,7 @@ async function performVehiclesWithMultipleDevicesCountCheck(database, context)
         }
         catch(err){
             context.log(err);
-            await insertAlertIntoPg(env.name,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', moment().toISOString, 'Check Failed');
+            await insertAlertIntoPg(env.name,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', 'Check Failed');
         }
     }
 }
