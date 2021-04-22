@@ -8,6 +8,7 @@ const vehiclesWithNullVinCheckRepo = require('./vehicle-null-vin-check-repo');
 const latestTripDataCheckRepo = require('./latest-trip-data-check-repo');
 const TTLTelematicsCheckRepo = require('./ttl-telematics-check-repo');
 const TTLReferenceDataCheckRepo = require('./ttl-reference-data-check-repo');
+const enrollmentCheckRepo = require('./enrollment-check-repo');
 
 let client= null;
 let database =null;
@@ -33,9 +34,6 @@ module.exports = async function (context, myTimer) {
     await latestTripDataCheckRepo.performLatestTripDataCheck(database,context);
     await TTLTelematicsCheckRepo.performTTLTelematicsCheck(database,context);
     await TTLReferenceDataCheckRepo.performTTLReferenceDataCheck(database,context);
-    // if (myTimer.isPastDue)
-    // {
-    //     context.log('JavaScript is running late!');
-    // }
+    await enrollmentCheckRepo.performEnrollmentCheck(database,context);
     context.log('JavaScript timer trigger function ran!', timeStamp);
 };

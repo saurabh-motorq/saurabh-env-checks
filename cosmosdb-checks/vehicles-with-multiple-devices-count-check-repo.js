@@ -12,7 +12,6 @@ async function performVehiclesWithMultipleDevicesCountCheck(database, context)
         try{
             const container = database.container(config.collection.entitiesId);
             const { resources: vehicleCount} = await container.items.query(querySpec).fetchAll();
-            context.log(vehicleCount[0]);
             if (vehicleCount[0].count === 0) {
                     context.log('No vehicles with multiple devices');
             } else {
@@ -22,7 +21,7 @@ async function performVehiclesWithMultipleDevicesCountCheck(database, context)
         }
         catch(err){
             context.log(err);
-            await insertAlertIntoPg(env,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', moment().toISOString, 'Check Failed');
+            await insertAlertIntoPg(env.name,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', moment().toISOString, 'Check Failed');
         }
     }
 }

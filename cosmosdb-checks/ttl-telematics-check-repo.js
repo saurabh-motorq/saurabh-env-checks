@@ -11,7 +11,6 @@ async function performTTLTelematicsCheck(database, context)
         try{
             const container = database.container(config.collection.telematicsId);
             const { resources: expiredReportCount} = await container.items.query(querySpec).fetchAll();
-            // context.log(vehicleCount[0].count);
             if (expiredReportCount[0].count === 0) {
                     context.log('No expired reports present in telematics collection');
             } else {

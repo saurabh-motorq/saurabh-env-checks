@@ -11,7 +11,6 @@ async function performNullVinCheck(database, context)
         try{
             const container = database.container(config.collection.entitiesId);
             const { resources: vehicleCount} = await container.items.query(querySpec).fetchAll();
-            // context.log(vehicleCount[0].count);
             if (vehicleCount[0].count === 0) {
                     context.log('No vehicle with null vin found');
             } else {

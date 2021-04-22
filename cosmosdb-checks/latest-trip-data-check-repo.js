@@ -11,7 +11,6 @@ async function performLatestTripDataCheck(database, context)
         try{
             const container = database.container(config.collection.telematicsId);
             const { resources: tripCount} = await container.items.query(querySpec).fetchAll();
-            // context.log(vehicleCount[0].count);
             if (tripCount[0].count !== 0) {
                     context.log('Trips found in last one day');
             } else {
