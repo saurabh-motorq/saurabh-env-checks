@@ -1,6 +1,5 @@
 const { insertAlertIntoPg } = require("./pg-repo");
 var config = require("./config");
-const moment = require('moment');
 const { environments } = require('../common/environments/index');
 
 async function performEnrolledVehiclesDevicesCountCheck(database, context)
