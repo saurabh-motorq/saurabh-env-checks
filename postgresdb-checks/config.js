@@ -21,6 +21,8 @@ config.sslmode = process.env.PG_SAURABH_TEST_SSLMODE;
 config.pgTables = {
 	'tripFeed': process.env.PGDB_TRIP_FEED_TABLE || 'tripfeed',
 	'eventFeed': process.env.PGDB_EVENT_FEED_TABLE || 'eventfeed',
-	'latestStore': process.env.PGDB_LATEST_STORE_TABLE || 'latest_store'
+	'latestStore': process.env.PGDB_LATEST_STORE_TABLE || 'latest_store',
+	'vehicles': process.env.PGDB_VEHICLES_TABLE || 'vehicles',
+	'devices': process.env.PGDB_DEVICES_TABLE || 'devices'
 }
 module.exports = config;

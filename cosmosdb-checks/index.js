@@ -17,14 +17,11 @@ async function setupCosmosdbClient(context)
     const endpoint = config.endpoint;
     const databaseId=config.database.id;
     const key= config.key
-    console.log(endpoint);
-    console.log(databaseId);
     client = new CosmosClient({ endpoint, key });
     database = client.database(databaseId);
 }
 
 module.exports = async function (context, myTimer) {
-    var timeStamp = new Date().toISOString();
     context=console;
     await setupCosmosdbClient(context);
     await checkDuplicateDpsRepo.performDuplicateDpsCheck(database, context);
@@ -35,5 +32,4 @@ module.exports = async function (context, myTimer) {
     await TTLTelematicsCheckRepo.performTTLTelematicsCheck(database,context);
     await TTLReferenceDataCheckRepo.performTTLReferenceDataCheck(database,context);
     await enrollmentCheckRepo.performEnrollmentCheck(database,context);
-    context.log('JavaScript timer trigger function ran!', timeStamp);
 };

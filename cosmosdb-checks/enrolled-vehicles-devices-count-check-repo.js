@@ -16,7 +16,7 @@ async function performEnrolledVehiclesDevicesCountCheck(database, context)
             const { resources: vehicleCount} = await container.items.query(vehicleQuerySpec).fetchAll();
             const { resources: deviceCount} = await container.items.query(deviceQuerySpec).fetchAll();
             var diff=vehicleCount[0].count-deviceCount[0].count;
-            if (vehicleCount === deviceCount) {
+            if (diff === 0) {
                     context.log('Same vehicles and devices count');
             } else {
                 context.log('Different vehicles and devices count');
