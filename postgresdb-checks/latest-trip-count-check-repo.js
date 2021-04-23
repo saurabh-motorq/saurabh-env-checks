@@ -10,7 +10,6 @@ async function performLatestTripCountCheck(context)
         };
         try{
             const tripCount = await pgRepo.queryPG(tripQuerySpec.query);
-            context.log(tripCount.rows[0].count);
             if (tripCount.rows[0].count>0) {
                     context.log('trips found in last 24 hrs');
             } else {

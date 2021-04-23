@@ -7,9 +7,8 @@ const latestStoreUpdationCheckRepo = require('./latest_store-updation-check-repo
 
 module.exports = async function (context, myTimer) {   
     context = console;
-    // await latestTripCountCheckRepo.performLatestTripCountCheck(context);
-    // await latestEventCountCheckRepo.performLatestEventCountCheck(context);
-    // await vehicleDeviceCountMatchCheckRepo.performVehicleDeviceCountMatch(context);
-    await latestStoreUpdationCheckRepo.performLatestStoreUpdationCheck(context);
-    // context.log('JavaScript timer trigger function ran!', timeStamp);  
+    await latestTripCountCheckRepo.performLatestTripCountCheck(context);
+    await latestEventCountCheckRepo.performLatestEventCountCheck(context);
+    await vehicleDeviceCountMatchCheckRepo.performVehicleDeviceCountMatch(context);
+    await latestStoreUpdationCheckRepo.performLatestStoreUpdationCheck(context); 
 };

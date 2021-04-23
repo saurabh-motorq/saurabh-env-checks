@@ -4,8 +4,6 @@ require('dotenv').config();
 const config = require("./config");
 class PgDb {
     constructor() {
-        console.log(config.pgPassword);
-        console.log(config.pgUser);
         this.pool = new pg.Pool({
             user: config.pgUser,
             host: config.pgHost,
