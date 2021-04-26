@@ -1,30 +1,26 @@
 const { insertAlertIntoPg } = require("./pg-repo");
-var config = require("./config");
-const { environments } = require('../common/environments/index');
 
-async function performDuplicateDpsCheck(database, context)
+async function performDuplicateDpsCheck(database, context, env)
 {
-    for(const env of environments) {
-        var querySpec = {
-            query: "select r.deviceId as deviceId, r.dpsCount from ( select c.dId as deviceId, count(1) as dpsCount from c where c.type = 'DEVICEPROCESSINGSTATE' group by c.dId) r where r.dpsCount > 1"
-        };
+    var querySpec = {
+        query: "select r.deviceId as deviceId, r.dpsCount from ( select c.dId as deviceId, count(1) as dpsCount from c where c.type = 'DEVICEPROCESSINGSTATE' group by c.dId) r where r.dpsCount > 1"
+    };
 
-        try{
-            const container = database.container(config.collection.telematicsId);
-            const { resources: duplicateDps} = await container.items.query(querySpec).fetchAll();
-            if (duplicateDps.length === 0) {
-                    context.log('No duplicate dps found');
-                    
-            } else {
-                context.log('duplicate dps found');
-                const devicesWithDuplicateDps = duplicateDps.map(item => "device_id: " + item.deviceId + " dps_count: " + item.dpsCount);
-                await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS',devicesWithDuplicateDps);
-            }
+    try{
+        const container = database.container(env.infra.cosmos.collection.telematicsId);
+        const { resources: duplicateDps} = await container.items.query(querySpec).fetchAll();
+        if (duplicateDps.length === 0) {
+                context.log('No duplicate dps found');
+                
+        } else {
+            context.log('duplicate dps found');
+            const devicesWithDuplicateDps = duplicateDps.map(item => "device_id: " + item.deviceId + " dps_count: " + item.dpsCount);
+            await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS',devicesWithDuplicateDps);
         }
-        catch(err){
-            context.log(err);
-            await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS', 'Duplicate Dps Check Failed');
-        }
+    }
+    catch(err){
+        context.log(err);
+        await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS', 'Duplicate Dps Check Failed');
     }
 }
 

@@ -1,9 +1,10 @@
 
 const pg = require("pg");
-require('dotenv').config();
-const config = require("./config");
+
 class PgDb {
-    constructor() {
+    constructor(config) {
+        console.log(config.pgPassword);
+        console.log(config.pgUser);
         this.pool = new pg.Pool({
             user: config.pgUser,
             host: config.pgHost,
@@ -14,10 +15,10 @@ class PgDb {
           });
         this.pool.on('error', err => {
             // tslint:disable-next-line no-console
-            console.log(err);
+            context.log(err);
         });
     }
-    async query(text, params) {
+    async query(text, params=[]) {
         return await this.pool.query(text, params);
     }
 }

@@ -1,36 +1,34 @@
 require('dotenv').config();
 const CosmosClient = require("@azure/cosmos").CosmosClient;
-const config = require("./config");
 const pgRepo = require('./pg-repo')
-const { environments } = require('../common/environments/index');
 
 let client= null;
 let database =null;
-async function setupCosmosdbClient()
+async function setupCosmosdbClient(env)
 {
-    const endpoint = config.endpoint;
-    const databaseId=config.database.id;
-    const key= config.key
-    client = new CosmosClient({ endpoint, key });
-    database = client.database(databaseId);
+    const endpoint= env.infra.cosmos.endpoint;
+    const databaseId= env.infra.cosmos.database.id;
+    const key= env.infra.cosmos.key
+    client= new CosmosClient({ endpoint, key });
+    database= client.database(databaseId);
 }
 
-async function vehicleCountMatch(env,context){
+async function vehicleCountMatch(env,clientPgdb,context){
     //cosmos vehicle count
-    const container = database.container(config.collection.entitiesId);
+    const container = database.container(env.infra.cosmos.collection.entitiesId);
     var cosmosVehicleQuerySpec = {
         query: "select count(1) as count from c where c.enrollmentStatus='ENROLLED' and c.type='VEHICLE'"
     };
     
     
     //pg vehicle count
-    vehiclesTable= config.pgTables.vehicles;
+    vehiclesTable= env.infra.pg.tables.vehicles;
     var pgVehicleQuerySpec = {
         query: `SELECT count(*) as count from ${vehiclesTable} as v WHERE v.active=true and v.vin!=NULL`
     }
     try{
         const { resources: cosmosVehicleCount} = await container.items.query(cosmosVehicleQuerySpec).fetchAll();
-        const pgVehicleCount = await pgRepo.queryPG(pgVehicleQuerySpec.query);
+        const pgVehicleCount = await clientPgdb.query(pgVehicleQuerySpec.query);
         const diff = cosmosVehicleCount[0].count - pgVehicleCount.rows[0].count;
         if(diff === 0)
         {
@@ -47,21 +45,21 @@ async function vehicleCountMatch(env,context){
     }
 };
 
-async function deviceCountMatch(env, context){
+async function deviceCountMatch(env, clientPgdb,context){
     //cosmos device count
-    const container = database.container(config.collection.entitiesId);
+    const container = database.container(env.infra.cosmos.collection.entitiesId);
     var cosmosDeviceQuerySpec = {
         query: "select count(1) as count from c where c.type='DEVICE' and c.vin!= null"
     };
 
     //pg device count
-    devicesTable = config.pgTables.devices;
+    devicesTable = env.infra.pg.tables.devices;
     var pgDeviceQuerySpec = {
         query: `SELECT count(*) as count from ${devicesTable} WHERE activationtimestamp!=NULL`
     }
     try{
         const { resources: cosmosDeviceCount} = await container.items.query(cosmosDeviceQuerySpec).fetchAll();
-        const pgDeviceCount = await pgRepo.queryPG(pgDeviceQuerySpec.query);
+        const pgDeviceCount = await clientPgdb.query(pgDeviceQuerySpec.query);
         
         const diff = cosmosDeviceCount[0].count - pgDeviceCount.rows[0].count;
 
@@ -80,13 +78,13 @@ async function deviceCountMatch(env, context){
     }
 };
 
-async function performVehicleDeviceCountMatch(context)
+async function performVehicleDeviceCountMatch(context,clientPgdb,env)
 {
-    for (const env of environments)
+    if(env.infra.cosmos)
     {
-        await setupCosmosdbClient();
-        await vehicleCountMatch(env, context);
-        await deviceCountMatch(env, context);
+        await setupCosmosdbClient(env);
+        await vehicleCountMatch(env, clientPgdb, context);
+        await deviceCountMatch(env, clientPgdb, context);
     }
 };
 

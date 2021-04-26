@@ -29,7 +29,15 @@ function main() {
                         criticalKey: queryConfig.pagerDutyCriticalKey
                     },
                     pg: {
-
+                        user: '',
+                        host: '',
+                        password: '',
+                        dbname: '',
+                        port: '',
+                        sslmode: '',
+                        tables: {
+                            
+                        }
                     },
                     eh: {
 
