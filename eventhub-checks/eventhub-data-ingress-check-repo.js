@@ -43,12 +43,12 @@ async function performIngressMessagesCheck(context, env, bearerToken)
                 }
                 else{
                         context.log(`No messages received for the event hub ${eventhubs[key].name} in past 24 hours`)
-                        await insertAlertIntoPg(env.name, 'INGRESS_MESSAGES_CHECK', `No messages received for the event hub ${eventhubs[key].name} in past 24 hours`);
+                        await insertAlertIntoPg(env.name, 'INGRESS_MESSAGES_CHECK', {details: `No messages received for the event hub ${eventhubs[key].name} in past 24 hours`});
                 }
             }
             catch(err){
                 context.log(err);
-                await insertAlertIntoPg(env.name,'INGRESS_MESSAGES_CHECK',`Check failed for eventhub ${eventhubs[key].name}`)
+                await insertAlertIntoPg(env.name,'INGRESS_MESSAGES_CHECK', {details: `Check failed for eventhub ${eventhubs[key].name}`});
             }
         }
     }

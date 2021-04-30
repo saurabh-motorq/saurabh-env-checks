@@ -46,7 +46,7 @@ async function performCaptureEnabledCheck(context, env, bearerToken)
                     if(value[1].timeseries.length !== 0 && value[1].timeseries[0].data[0].count !== 0)
                     {
                         context.log(`Capture not enabled for the eventhub ${eventhubs[key].name}`);
-                        await insertAlertIntoPg(env.name, 'CAPTURE_ENABLED_CHECK', `Capture not enabled for ${eventhubs[key].name}`);
+                        await insertAlertIntoPg(env.name, 'CAPTURE_ENABLED_CHECK', {details: `Capture not enabled for ${eventhubs[key].name}`});
                     }
                     else
                         context.log('No ingress messages present to test capture');
@@ -54,7 +54,7 @@ async function performCaptureEnabledCheck(context, env, bearerToken)
             }
             catch(err){
                 context.log(err);
-                await insertAlertIntoPg(env.name,'CAPTURE_ENABLED_CHECK',`Check failed for eventhub ${eventhubs[key].name}`)
+                await insertAlertIntoPg(env.name,'CAPTURE_ENABLED_CHECK',{details: `Check failed for eventhub ${eventhubs[key].name}`});
             }
         }
     }

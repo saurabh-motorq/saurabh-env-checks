@@ -41,24 +41,24 @@ async function performIngressEgressMessageCountCheck(context, env, bearerToken)
                 if(value[0].timeseries.length === 0 && value[1].timeseries.length ===0)
                 {
                     context.log(`No ingress or egress data in the eventhub ${eventhubs[key].name}`);
-                    await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', `No ingress or egress data in eventhub ${eventhubs[key].name} in past 24 hours`);
+                    await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', {details:`No ingress or egress data in eventhub ${eventhubs[key].name} in past 24 hours`});
                 }
                 else{
                     if(value[0].timeseries.length !== 0 && value[1].timeseries.length ===0)
                     {
                         context.log(`No egress in the event hub ${eventhubs[key].name}`);
-                        await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', `No egress data in eventhub ${eventhubs[key].name} in past 24 hours`);
+                        await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', {details: `No egress data in eventhub ${eventhubs[key].name} in past 24 hours`});
                     }
                     else if(value[0].timeseries.length === 0 && value[1].timeseries.length !==0)
                     {
                         context.log(`No ingress in the event hub ${eventhubs[key].name}`);
-                        await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', `No ingress data in eventhub ${eventhubs[key].name} in past 24 hours`);
+                        await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', {details:`No ingress data in eventhub ${eventhubs[key].name} in past 24 hours`});
                     }
                     else{
                         if(value[0].timeseries[0].data[0].count !== value[1].timeseries[0].data[0].count)
                         {
                             context.log(`different ingress and egress messages in last 24 hours in ${eventhubs[key].name}`)
-                            await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', `Different ingress egress messages in eventhub ${eventhubs[key].name} in past 24 hours`);
+                            await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', {details: `Different ingress egress messages in eventhub ${eventhubs[key].name} in past 24 hours`});
                         }
                         else
                             context.log(`same ingress egress messages int the event hub ${eventhubs[key].name}`);
@@ -67,7 +67,7 @@ async function performIngressEgressMessageCountCheck(context, env, bearerToken)
             }
             catch(err){
                 context.log(err);
-                await insertAlertIntoPg(env.name,'INGRESS_EGRESS_MESSAGE_COUNT_CHECK',`Check failed for eventhub ${eventhubs[key].name}`);
+                await insertAlertIntoPg(env.name,'INGRESS_EGRESS_MESSAGE_COUNT_CHECK',{details: `Check failed for eventhub ${eventhubs[key].name}`});
             }
         }
     }
