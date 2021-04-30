@@ -25,9 +25,27 @@ const environment = {
 		},
 		"eh": {
 			// "event_hub_namespace": process.env.CUSTOMER_DEMO_EVENT_HUB_NAMESPACE,
-			"geotab_event_hub_namespace": process.env.SAURABH_TEST_GEOTAB_EVENT_HUB_NAMESPACE,
-			"geotab_event_hub": "geotaborderedmessages",
-			"geotab_event_hub_partition_count": "2",
+			"geotab_event_hub":{
+				"name": process.env.SAURABH_TEST_GEOTAB_EVENT_HUB,
+				"namespace": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE,
+				"partition_count": "2",
+				"namespace_uri": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE_URI,
+				"connection_string": process.env.SAURABH_TEST_EVENT_HUB_CONNECTION_STRING,
+				"isSource": 1,
+				"isCustomer": 0
+			},
+			"feed_event_hub": {
+				"name": process.env.SAURABH_TEST_FEED_EVENT_HUB,
+				"namespace": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE,
+				"partition_count": "2",
+				"namespace_uri": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE_URI,
+				"connection_string": process.env.SAURABH_TEST_EVENT_HUB_CONNECTION_STRING,
+				"isSource": 0,
+				"isCustomer": 1
+			},
+			"clientId": process.env.SAURABH_TEST_EVENT_HUB_CLIENT_ID,
+			"clientSecret": process.env.SAURABH_TEST_EVENT_HUB_CLIENT_SECRET,
+			"tenantId": process.env.SAURABH_TEST_EVENT_HUB_TENANT_ID,
 			// "geotab_unbuffered_event_hub": "geotaborderedmessagesunbuffered",
 			// "geotab_unbuffered_event_hub_partition_count": "2",
 			// "gm_source_xml_event_hub_namespace": process.env.CUSTOMER_DEMO_GM_SOURCE_XML_EVENT_HUB_NAMESPACE,
