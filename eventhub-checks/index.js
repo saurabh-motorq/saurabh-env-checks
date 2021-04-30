@@ -25,11 +25,12 @@ async function getbearertoken(context, env)
           'resource': `${resource}`
         }
     };
+    let resp=null;
     try{
-    const resp = await rp(options, function (error, response) {
+    resp = await rp(options, function (error, response) {
         if (error)
             throw new Error(error);
-        return JSON.parse(response.body).access_token;
+        return response.body;
     });
     }
     catch(error){
