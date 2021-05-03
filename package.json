@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@azure/cosmos": "^3.9.3",
-    "@azure/event-hubs": "^2.1.1",
+    "@azure/event-hubs": "^5.5.0",
     "@sendgrid/helpers": "^6.2.1",
     "@sendgrid/mail": "^6.2.1",
     "applicationinsights": "^1.6.0",
@@ -27,6 +27,7 @@
     "documentdb": "^1.15.3",
     "dotenv": "^5.0.1",
     "express": "^4.17.1",
+    "fetch": "^1.1.0",
     "fs": "0.0.1-security",
     "handlebars": "^4.7.6",
     "is-reachable": "^3.1.0",
