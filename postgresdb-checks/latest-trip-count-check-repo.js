@@ -12,12 +12,12 @@ async function performLatestTripCountCheck(context,clientPgdb,env)
                 context.log('trips found in last 24 hrs');
         } else {
             context.log('No trips found in the last day');
-            await pgRepo.insertAlertIntoPg(env.name,'TRIP_COUNTS_IN_POSTGRES','no trips found in the last 24 hours' );
+            await pgRepo.insertAlertIntoPg(env.name,'TRIPS_COUNT_IN_POSTGRES',{details: 'no trips found in the last 24 hours'});
         }
     }
     catch(err){
         context.log(err);
-        await pgRepo.insertAlertIntoPg(env.name,'TRIP_COUNTS_IN_POSTGRES', 'Check Failed');
+        await pgRepo.insertAlertIntoPg(env.name,'TRIPS_COUNT_IN_POSTGRES', {details: 'Check Failed'});
     }
 }
 

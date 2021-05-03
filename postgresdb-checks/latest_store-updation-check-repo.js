@@ -12,12 +12,12 @@ async function performLatestStoreUpdationCheck(context,clientPgdb,env)
                 context.log('updates found in latest_store in the last 24 hours');
         } else {
             context.log('No updates found in latest_store in the last 24 hours');
-            await pgRepo.insertAlertIntoPg(env.name,'LATEST_STORE_UPDATION_IN_POSTGRES','no updates found in latest_store in the last 24 hours' );
+            await pgRepo.insertAlertIntoPg(env.name,'LATEST_STORE_UPDATION_IN_POSTGRES',{details:'no updates found in latest_store in the last 24 hours'});
         }
     }
     catch(err){
         context.log(err);
-        await pgRepo.insertAlertIntoPg(env.name,'LATEST_STORE_UPDATION_IN_POSTGRES', 'Check Failed');
+        await pgRepo.insertAlertIntoPg(env.name,'LATEST_STORE_UPDATION_IN_POSTGRES', {details: 'Check Failed'});
     }
 }
 
