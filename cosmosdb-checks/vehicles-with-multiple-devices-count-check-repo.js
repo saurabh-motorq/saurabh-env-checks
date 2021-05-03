@@ -14,12 +14,12 @@ async function performVehiclesWithMultipleDevicesCountCheck(database, context, e
                 context.log('No vehicles with multiple devices');
         } else {
             context.log('Vehicles with multiple devices found');
-            await insertAlertIntoPg(env.name,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', 'number of vehicles with multiple devices ' + vehicleCount[0].count);
+            await insertAlertIntoPg(env.name,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', {vehicleCount: vehicleCount[0].count});
         }
     }
     catch(err){
         context.log(err);
-        await insertAlertIntoPg(env.name,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', 'Check Failed');
+        await insertAlertIntoPg(env.name,'VEHICLES_WITH_MULTIPLE_DEVICES_COUNT', {details:'Check Failed'});
     }
 }
 

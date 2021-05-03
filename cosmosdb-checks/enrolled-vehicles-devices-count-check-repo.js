@@ -17,12 +17,12 @@ async function performEnrolledVehiclesDevicesCountCheck(database, context, env)
                 context.log('Same vehicles and devices count');
         } else {
             context.log('Different vehicles and devices count');
-            await insertAlertIntoPg(env.name,'DIFFERENT_VEHICLES_AND_DEVICES_COUNT','Vehicle Count - Device Count ' + diff );
+            await insertAlertIntoPg(env.name,'DIFFERENT_VEHICLES_AND_DEVICES_COUNT',{vehicleDeviceCountDiff: diff });
         }
     }
     catch(err){
         context.log(err);
-        await insertAlertIntoPg(env.name,'DIFFERENT_VEHICLES_AND_DEVICES_COUNT', 'Check Failed');
+        await insertAlertIntoPg(env.name,'DIFFERENT_VEHICLES_AND_DEVICES_COUNT', {details: 'Check Failed'});
     }
 }
 

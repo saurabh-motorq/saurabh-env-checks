@@ -22,12 +22,12 @@ async function performEnrollmentCheck(database, context, env)
                 context.log('More than required operations in the last month are successful');
         } else {
             context.log('less than required operations have succeeded in the last month');
-            await insertAlertIntoPg(env.name,'ENROLLMENT_OPERATION_CHECK','Success ratio of enrollment operations is ' + ratio);
+            await insertAlertIntoPg(env.name,'ENROLLMENT_OPERATION_CHECK',{enrollmentSuccessRatio: ratio});
         }
     }
     catch(err){
         context.log(err);
-        await insertAlertIntoPg(env.name,'ENROLLMENT_OPERATION_CHECK', 'Enrollment operationWorking Check Failed');
+        await insertAlertIntoPg(env.name,'ENROLLMENT_OPERATION_CHECK', {details: 'Enrollment operationWorking Check Failed'});
     }
 }
 

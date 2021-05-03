@@ -13,12 +13,12 @@ async function performLatestTripDataCheck(database, context, env)
                 context.log('Trips found in last one day');
         } else {
             context.log('No trips found');
-            await insertAlertIntoPg(env.name,'TRIPS_IN_LAST_DAY','no trips found in last one day');
+            await insertAlertIntoPg(env.name,'TRIPS_IN_LAST_DAY',{details: 'no trips found in last one day'});
         }
     }
     catch(err){
         context.log(err);
-        await insertAlertIntoPg(env.name,'TRIPS_IN_LAST_DAY', 'Trips in last day check failed');
+        await insertAlertIntoPg(env.name,'TRIPS_IN_LAST_DAY', {details: 'check failed'});
     }
 }
 

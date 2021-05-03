@@ -14,13 +14,12 @@ async function performDuplicateDpsCheck(database, context, env)
                 
         } else {
             context.log('duplicate dps found');
-            const devicesWithDuplicateDps = duplicateDps.map(item => "device_id: " + item.deviceId + " dps_count: " + item.dpsCount);
-            await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS',devicesWithDuplicateDps);
+            await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS',{details: duplicateDps});
         }
     }
     catch(err){
         context.log(err);
-        await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS', 'Duplicate Dps Check Failed');
+        await insertAlertIntoPg(env.name,'COSMOS_DUPLICATE_DPS', {details: 'Duplicate Dps Check Failed'});
     }
 }
 

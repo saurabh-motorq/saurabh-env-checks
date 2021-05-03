@@ -13,12 +13,12 @@ async function performTTLReferenceDataCheck(database, context, env)
                 context.log('No expired reports present in reference-data collection');
         } else {
             context.log('Expired Reports Found');
-            await insertAlertIntoPg(env.name,'TTL_REFERENCE_DATA_CHECK','Number of expired reports found in reference_data with timestamp before last seven days ' + expiredReportCount[0].count);
+            await insertAlertIntoPg(env.name,'TTL_REFERENCE_DATA_CHECK',{expiredReportCount: expiredReportCount[0].count});
         }
     }
     catch(err){
         context.log(err);
-        await insertAlertIntoPg(env.name,'TTL_REFERENCE_DATA_CHECK', 'Ttl reference_data functioning check for reports having timestamp before last seven days failed');
+        await insertAlertIntoPg(env.name,'TTL_REFERENCE_DATA_CHECK', {details:'check failed'});
     }
 }
 
