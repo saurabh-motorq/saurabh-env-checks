@@ -1,6 +1,7 @@
 const pgRepo = require('./pg-repo');
 const { BlobServiceClient } = require('@azure/storage-blob');
 const config = require('./config');
+const { insertAlertIntoPg } = require('../eventhub-checks/pg-repo');
 
 var report = {};
 let containerClient = null;
@@ -42,19 +43,15 @@ async function uploadFullReport()
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     await blockBlobClient.upload(JSON.stringify(report),Object.keys(report).length);
 }
-async function uploadBlobs(context)
+
+async function uploadBlobs()
 {
     var d= new Date();
-    try{
-        for(const [key, value] of Object.entries(report))
-        {
-            const blobName= `${d.getFullYear()}/${d.getMonth()}/${d.getDate()}/${key}` + `.json`;
-            const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-            await blockBlobClient.upload(JSON.stringify(value),Object.keys(value).length);
-        }
-    }
-    catch(err){
-        context.log(err);
+    for(const [key, value] of Object.entries(report))
+    {
+        const blobName= `${d.getFullYear()}/${d.getMonth()}/${d.getDate()}/${key}` + `.json`;
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        await blockBlobClient.upload(JSON.stringify(value),Object.keys(value).length);
     }
 }
 
@@ -72,5 +69,6 @@ module.exports = async function (context, myTimer) {
     }
     catch(err){
         context.log(err);
+        insertAlertIntoPg('All env', 'CONSOLIDATED_REPORT_FOR_ENVIRONMENTS', {details: 'check failed'});
     }
 };
