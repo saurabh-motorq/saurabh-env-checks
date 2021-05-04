@@ -1,6 +1,6 @@
 require('dotenv').config();
 const CosmosClient = require("@azure/cosmos").CosmosClient;
-const { EventHubConsumerClient , earliestEventPosition, latestEventPosition }= require("@azure/event-hubs")
+const { EventHubConsumerClient , earliestEventPosition }= require("@azure/event-hubs")
 const { insertAlertIntoPg } = require("./pg-repo");
 const config = require("./config");
 

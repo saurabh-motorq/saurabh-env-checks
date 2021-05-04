@@ -15,7 +15,7 @@ async function performIngressEgressMessageCountCheck(context, env, bearerToken)
             apicall.resourceUri = eventhubs[key].namespace_uri;
             apicall.metricNames = `IncomingMessages,OutgoingMessages`;
             apicall.apiVersion = config.ehApiVersion;
-            apicall.aggregation= `count`;
+            apicall.aggregation= `total`;
             apicall.filter= `EntityName EQ '${eventhubs[key].name}'`;
             apicall.timespan= `${moment().subtract(1,'days').toISOString()}/${moment().toISOString()}`;
             apicall.interval= `PT24H`;
@@ -37,6 +37,7 @@ async function performIngressEgressMessageCountCheck(context, env, bearerToken)
                     return response.body;
                 });
                 const value=JSON.parse(responseBody).value;
+                console.log(value);
                 //0-> for incoming messages and 1-> for outgoing messages.
                 if(value[0].timeseries.length === 0 && value[1].timeseries.length ===0)
                 {
@@ -55,7 +56,7 @@ async function performIngressEgressMessageCountCheck(context, env, bearerToken)
                         await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', {details:`No ingress data in eventhub ${eventhubs[key].name} in past 24 hours`});
                     }
                     else{
-                        if(value[0].timeseries[0].data[0].count !== value[1].timeseries[0].data[0].count)
+                        if(value[0].timeseries[0].data[0].total !== value[1].timeseries[0].data[0].total)
                         {
                             context.log(`different ingress and egress messages in last 24 hours in ${eventhubs[key].name}`)
                             await insertAlertIntoPg(env.name, 'INGRESS_EGRESS_MESSAGE_COUNT_CHECK', {details: `Different ingress egress messages in eventhub ${eventhubs[key].name} in past 24 hours`});
