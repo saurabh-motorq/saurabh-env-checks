@@ -5,6 +5,7 @@ const captureEnabledCheckRepo = require('./capture-enabled-check-repo');
 const ingressMessagesCheckRepo = require('./eventhub-data-ingress-check-repo');
 const ingressEgressMessageCountCheckRepo = require('./ingress-egress-message-count-check-repo');
 const latestDataCheckRepo = require('./latest-data-check-repo');
+const throttledRequestsCheckRepo = require('./throttled-requests-check-repo');
 let rp = require('request-promise');
 
 async function getbearertoken(context, env)
@@ -49,6 +50,7 @@ module.exports = async function (context, myTimer) {
             await ingressMessagesCheckRepo.performIngressMessagesCheck(context,env,bearerToken);
             await ingressEgressMessageCountCheckRepo.performIngressEgressMessageCountCheck(context,env,bearerToken);
             await latestDataCheckRepo.performLatestDataCheck(context,env);
+            await throttledRequestsCheckRepo.performThrottledRequestsCheck(context,env,bearerToken);
         }
     }
 };

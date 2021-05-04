@@ -4,7 +4,7 @@ const moment = require('moment');
 const helper = require('./helper');
 let rp = require('request-promise');
 
-async function performIngressMessagesCheck(context, env, bearerToken)
+async function performThrottledRequestsCheck(context, env, bearerToken)
 {
     for(const key in env.infra.eh)
     {
@@ -13,9 +13,9 @@ async function performIngressMessagesCheck(context, env, bearerToken)
         {
             let apicall = {};
             apicall.resourceUri = eventhubs[key].namespace_uri;
-            apicall.metricNames = `IncomingMessages`;
+            apicall.metricNames = `ThrottledRequests`;
             apicall.apiVersion = config.ehApiVersion;
-            apicall.aggregation= `count`;
+            apicall.aggregation= `total`;
             apicall.filter= `EntityName EQ '${eventhubs[key].name}'`;
             apicall.timespan= `${moment().subtract(1,'days').toISOString()}/${moment().toISOString()}`;
             apicall.interval= config.data_ingress_check_timegrain;
@@ -37,21 +37,21 @@ async function performIngressMessagesCheck(context, env, bearerToken)
                     return response.body;
                 });
                 const value=JSON.parse(responseBody).value;
-                if(value[0].timeseries.length !== 0 && value[0].timeseries[0].data[0].count!==0)
+                if(value[0].timeseries.length === 0 || value[0].timeseries[0].data[0].total===0)
                 {
-                    context.log(`${value[0].timeseries[0].data[0].count} ingress messages seen for the event hub ${eventhubs[key].name} in past 24 hours`);
+                    context.log(` no throttled requests for the event hub ${eventhubs[key].name} in past 24 hours`);
                 }
                 else{
-                        context.log(`No messages received for the event hub ${eventhubs[key].name} in past 24 hours`)
-                        await insertAlertIntoPg(env.name, 'INGRESS_MESSAGES_CHECK', {details: `No messages received for the event hub ${eventhubs[key].name} in past 24 hours`});
+                        context.log(`${value[0].timeseries[0].data[0].total} throttled requests present for the event hub ${eventhubs[key].name} in past 24 hours`)
+                        await insertAlertIntoPg(env.name, 'THROTTLED_REQUESTS_CHECK', {details: `${value[0].timeseries[0].data[0].total} throttled requests present for the event hub ${eventhubs[key].name} in past 24 hours`});
                 }
             }
             catch(err){
                 context.log(err);
-                await insertAlertIntoPg(env.name,'INGRESS_MESSAGES_CHECK', {details: `Check failed for eventhub ${eventhubs[key].name}`});
+                await insertAlertIntoPg(env.name,'THROTTLED_REQUESTS_CHECK', {details: `Check failed for eventhub ${eventhubs[key].name}`});
             }
         }
     }
 }
 
-module.exports = { performIngressMessagesCheck };
+module.exports = { performThrottledRequestsCheck };
