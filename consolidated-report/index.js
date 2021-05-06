@@ -1,7 +1,7 @@
 const pgRepo = require('./pg-repo');
 const { BlobServiceClient } = require('@azure/storage-blob');
 const config = require('./config');
-const { insertAlertIntoPg } = require('../eventhub-checks/pg-repo');
+const { insertAlertIntoPg } = require('./pg-repo');
 
 var report = {};
 let containerClient = null;
@@ -12,7 +12,6 @@ async function setupContainerClient()
     const containerName = config.containerName;
     containerClient = blobServiceClient.getContainerClient(containerName);
     await containerClient.createIfNotExists();
-    console.log(containerClient);
 }
 
 function generateReport(values)
@@ -21,18 +20,22 @@ function generateReport(values)
     {
         const env = row.environment_name;
         const type=row.type;
+        const subtype=row.subtype;
         if(!report[env])
         {
             report[env]={};
         }
         if(!report[env][type])
         {
-            report[env][type]={failed_checks: 0, faults: []};
+            report[env][type]={};
+        }
+        if(!report[env][type][subtype])
+        {
+            report[env][type][subtype]={'failed_checks': 0, 'total_anomalies': 0, 'anomalies': []};
         }
         if(row.anomaly.toLowerCase().includes('check failed'))
-            report[env][type].failed_checks++;
-        else
-            report[env][type]['faults'].push({timestamp: row.ts , anomaly: row.anomaly});
+            report[env][type]['failed_checks']++;
+        report[env][type][subtype]['anomalies'].push({'timestamp': row.ts , 'anomaly': row.anomaly});
     }
 }
 
@@ -69,6 +72,6 @@ module.exports = async function (context, myTimer) {
     }
     catch(err){
         context.log(err);
-        insertAlertIntoPg('All env', 'CONSOLIDATED_REPORT_FOR_ENVIRONMENTS', {details: 'check failed'});
+        insertAlertIntoPg('All env', 'CONSOLIDATED_REPORT','CONSOLIDATED_REPORT_FOR_ENVIRONMENTS', {details: 'check failed'});
     }
 };

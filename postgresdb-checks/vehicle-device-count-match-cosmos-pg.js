@@ -36,12 +36,12 @@ async function vehicleCountMatch(env,clientPgdb,context){
         }
         else{
             context.log('different number of vehicles found in cosmosDB and PostGres');
-            pgRepo.insertAlertIntoPg(env.name,'VEHICLE_COUNT_MATCH_IN_COSMOS_AND_PG', {cosmosPgVehicleCountDiff: diff});
+            pgRepo.insertAlertIntoPg(env.name,'POSTGRES','VEHICLE_COUNT_MATCH_IN_COSMOS_AND_PG', {cosmosPgVehicleCountDiff: diff});
         }
     }
     catch(err){
         context.log(err);
-        pgRepo.insertAlertIntoPg(env.name, 'VEHICLE_COUNT_MATCH_IN_COSMOS_AND_PG', {details: 'check failed'});
+        pgRepo.insertAlertIntoPg(env.name, 'POSTGRES','VEHICLE_COUNT_MATCH_IN_COSMOS_AND_PG', {details: 'check failed'});
     }
 };
 
@@ -69,12 +69,12 @@ async function deviceCountMatch(env, clientPgdb,context){
         }
         else{
             context.log('different number of devices found in cosmosDB and PostGres');
-            pgRepo.insertAlertIntoPg(env.name,'DEVICE_COUNT_MATCH_IN_COSMOS_AND_PG', {cosmosPgDeviceCountDiff: diff});
+            pgRepo.insertAlertIntoPg(env.name,'POSTGRES','DEVICE_COUNT_MATCH_IN_COSMOS_AND_PG', {cosmosPgDeviceCountDiff: diff});
         }
     }
     catch(err){
         context.log(err);
-        pgRepo.insertAlertIntoPg(env.name, 'DEVICE_COUNT_MATCH_IN_COSMOS_AND_PG', {details: 'check failed'});
+        pgRepo.insertAlertIntoPg(env.name,'POSTGRES', 'DEVICE_COUNT_MATCH_IN_COSMOS_AND_PG', {details: 'check failed'});
     }
 };
 

@@ -13,12 +13,12 @@ async function performNullVinCheck(database, context, env)
                 context.log('No vehicle with null vin found');
         } else {
             context.log('Vehicles with null vin found');
-            await insertAlertIntoPg(env.name,'VEHICLES_WITH_NULL_VIN',{vechicleCount: vehicleCount[0].count});
+            await insertAlertIntoPg(env.name,'COSMOS','VEHICLES_WITH_NULL_VIN',{vechicleCount: vehicleCount[0].count});
         }
     }
     catch(err){
         context.log(err);
-        await insertAlertIntoPg(env.name,'VEHICLES_WITH_NULL_VIN', {details: 'check failed'});
+        await insertAlertIntoPg(env.name,'COSMOS','VEHICLES_WITH_NULL_VIN', {details: 'check failed'});
     }
 }
 
