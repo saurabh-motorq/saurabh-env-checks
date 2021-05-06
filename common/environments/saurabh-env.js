@@ -1,4 +1,4 @@
-const enviroment = {
+const environment = {
 	"name": "SAURABH_TEST",
 	"apiVersion": "v3",
 	// "feedApiUrl": process.env.CUSTOMER_DEMO_FEED_API_URL,
@@ -25,9 +25,27 @@ const enviroment = {
 		},
 		"eh": {
 			// "event_hub_namespace": process.env.CUSTOMER_DEMO_EVENT_HUB_NAMESPACE,
-			"geotab_event_hub_namespace": process.env.SAURABH_TEST_GEOTAB_EVENT_HUB_NAMESPACE,
-			"geotab_event_hub": "geotaborderedmessages",
-			"geotab_event_hub_partition_count": "2",
+			"geotab_event_hub":{
+				"name": process.env.SAURABH_TEST_GEOTAB_EVENT_HUB,
+				"namespace": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE,
+				"partition_count": "2",
+				"namespace_uri": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE_URI,
+				"connection_string": process.env.SAURABH_TEST_EVENT_HUB_CONNECTION_STRING,
+				"isSource": 1,
+				"isCustomer": 0
+			},
+			"feed_event_hub": {
+				"name": process.env.SAURABH_TEST_FEED_EVENT_HUB,
+				"namespace": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE,
+				"partition_count": "2",
+				"namespace_uri": process.env.SAURABH_TEST_EVENT_HUB_NAMESPACE_URI,
+				"connection_string": process.env.SAURABH_TEST_EVENT_HUB_CONNECTION_STRING,
+				"isSource": 0,
+				"isCustomer": 1
+			},
+			"clientId": process.env.SAURABH_TEST_EVENT_HUB_CLIENT_ID,
+			"clientSecret": process.env.SAURABH_TEST_EVENT_HUB_CLIENT_SECRET,
+			"tenantId": process.env.SAURABH_TEST_EVENT_HUB_TENANT_ID,
 			// "geotab_unbuffered_event_hub": "geotaborderedmessagesunbuffered",
 			// "geotab_unbuffered_event_hub_partition_count": "2",
 			// "gm_source_xml_event_hub_namespace": process.env.CUSTOMER_DEMO_GM_SOURCE_XML_EVENT_HUB_NAMESPACE,
@@ -64,8 +82,16 @@ const enviroment = {
 			// "telematics_postprocessor_event_hub_partition_count": "1"
 		},
 		"cosmos": {
-			"key": process.env.SAURABH_TEST_COSMOS_KEY,
-			"endpoint": "https://motorqcustomerdemo-cosmos.documents.azure.com:443/"
+			"key": process.env.DOCDB_ACCESS_KEY_READ_ACCESS,
+			"endpoint": process.env.DOCDB_ENDPOINT,
+			"database": {
+				'id': process.env.DOCDB_NAME || 'core-fleet'
+			},
+			"collection": {
+				'entitiesId': process.env.DOCDB_ENTITIES_COLLECTION || 'entities',
+				'telematicsId': process.env.DOCDB_TELEMATICS_COLLECTION || 'telematics',
+				'referenceDataId': process.env.DOCDB_REFERENCE_DATA_COLLECTION || 'reference-data'
+			},
 		},
 		"pager": {
 			"criticalKey": process.env.PAGER_MOTORQ_SAURABH_TEST_CRITICAL_KEY
@@ -76,7 +102,14 @@ const enviroment = {
             "user": process.env.PG_SAURABH_TEST_USER,
             "password": process.env.PG_SAURABH_TEST_USER_PASSWORD,
             "sslmode":  process.env.PG_SAURABH_TEST_SSLMODE,
-            "dbname": process.env.PG_SAURABH_TEST_DBNAME
+            "dbname": process.env.PG_SAURABH_TEST_DBNAME,
+			"tables": {
+				'tripFeed': process.env.PGDB_TRIP_FEED_TABLE || 'tripfeed',
+				'eventFeed': process.env.PGDB_EVENT_FEED_TABLE || 'eventfeed',
+				'latestStore': process.env.PGDB_LATEST_STORE_TABLE || 'latest_store',
+				'vehicles': process.env.PGDB_VEHICLES_TABLE || 'vehicles',
+				'devices': process.env.PGDB_DEVICES_TABLE || 'devices'
+			}
         },
 
 		"storage": {},
@@ -154,4 +187,4 @@ const enviroment = {
 		"lat/lon sync heartbeat"
 	]
 }
-module.exports = enviroment
+module.exports = environment
